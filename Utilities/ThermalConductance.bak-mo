@@ -1,0 +1,28 @@
+within HeatTransferComponents.Utilities;
+
+model ThermalConductance
+  import Units= Modelica.SIunits;
+  //**********
+  Units.ThermalConductance G;
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_a annotation(
+    Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b port_b annotation(
+    Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_conductance annotation(
+    Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput u_Q_flow annotation(
+    Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+equation
+  port_a.Q_flow=0.0;
+  port_b.Q_flow=0.0;
+  y_conductance= G;
+  
+  if(port_a.T<>port_b.T)then
+    G= u_Q_flow/abs(port_a.T - port_b.T);
+  else
+    G=0;
+  end if;
+  
+annotation(
+    Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}})}));
+end ThermalConductance;

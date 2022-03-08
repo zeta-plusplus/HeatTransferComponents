@@ -1,0 +1,17 @@
+within HeatTransferComponents.Utilities;
+
+model HeatConductance
+  import Units= Modelica.SIunits;
+  //**********
+  Units.ThermalConductance G;
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_a annotation(
+    Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-2, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b port_b annotation(
+    Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-2, -102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_conductance annotation(
+    Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+
+equation
+  
+  
+end HeatConductance;
