@@ -1,10 +1,14 @@
 within HeatTransferComponents.Utilities;
 
 model MeasureThermalConductance
+  //extends HeatTransferComponents.BaseClasses.ShowValue00;
   import Units= Modelica.SIunits;
   //**********
   parameter Integer significantDigits(min=1) = 4
     "Number of significant digits to be shown";
+  //**********
+  Real var2disp;
+  
   //**********
   Units.ThermalConductance G;
   Units.TemperatureDifference deltaT;
@@ -20,6 +24,7 @@ equation
   port_a.Q_flow=0.0;
   port_b.Q_flow=0.0;
   y_conductance= G;
+  var2disp=G;
   
   deltaT= abs(port_a.T - port_b.T);
   
@@ -31,5 +36,6 @@ equation
   
 annotation(
     defaultComponentName = "ThermalConductance",
-    Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, pattern = LinePattern.Dot, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, -120}, extent = {{-100, 8}, {100, -8}}, textString = "%name"), Text(origin = {0, 30}, extent = {{-120, 10}, {120, -10}}, textString =DynamicSelect("0.0", String(G, significantDigits=significantDigits)))}));
+    Icon(graphics = {Text(origin = {0, 30}, extent = {{-120, 10}, {120, -10}}, textString =DynamicSelect("0.0", String(var2disp, significantDigits=significantDigits))), Rectangle(fillColor = {255, 255, 255}, pattern = LinePattern.Dot, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, -120}, extent = {{-100, 8}, {100, -8}}, textString = "%name")}));
+    
 end MeasureThermalConductance;

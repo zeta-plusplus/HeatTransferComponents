@@ -1,10 +1,13 @@
 within HeatTransferComponents.Utilities;
 
 model MeasureThermalResistance
+  //extends HeatTransferComponents.BaseClasses.ShowValue00;
   import Units= Modelica.SIunits;
   //**********
   parameter Integer significantDigits(min=1) = 4
     "Number of significant digits to be shown";
+  //**********
+  Real var2disp;
   
   //**********
   Units.ThermalResistance R;
@@ -22,6 +25,7 @@ equation
   port_a.Q_flow=0.0;
   port_b.Q_flow=0.0;
   y_resistance = R;
+  var2disp= R;
   
   deltaT= abs(port_a.T - port_b.T);
   
@@ -33,5 +37,7 @@ equation
   
 annotation(
     defaultComponentName = "ThermalResistance",
-    Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, pattern = LinePattern.Dot, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, -120}, extent = {{-100, 8}, {100, -8}}, textString = "%name"), Text(origin = {0, 30}, extent = {{-120, 10}, {120, -10}}, textString =DynamicSelect("0.0", String(R, significantDigits=significantDigits)))}));
+    Icon(graphics = {Text(origin = {0, 30}, extent = {{-120, 10}, {120, -10}}, textString =DynamicSelect("0.0", String(var2disp, significantDigits=significantDigits))), Rectangle(fillColor = {255, 255, 255}, pattern = LinePattern.Dot, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, -120}, extent = {{-100, 8}, {100, -8}}, textString = "%name")}));
+  
+  
 end MeasureThermalResistance;
