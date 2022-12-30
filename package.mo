@@ -1,7 +1,7 @@
 package HeatTransferComponents
   extends Modelica.Icons.Package;
-  //uses(Modelica(version = "3.2.3"))
+  //uses(Modelica(version = "4.0.0"))
 
   annotation(
-    uses(Modelica(version = "3.2.3")));
+    uses(Modelica(version = "4.0.0")));
 end HeatTransferComponents;
