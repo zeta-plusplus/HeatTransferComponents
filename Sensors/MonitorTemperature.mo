@@ -42,6 +42,7 @@ equation
         Text(origin = {47, 0},textColor = {64, 64, 64}, extent = {{13, 40}, {53, 0}}, textString = "K"), Text(origin = {-266, 40}, textColor = {64, 64, 64}, extent = {{106, 60}, {427, 0}}, textString = DynamicSelect("0.0", String(var2disp, significantDigits, 0, true)))}),
     Documentation(info="<html>
 
-</html>"));
+</html>"),
+  experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-6, Interval = 0.002));
 
 end MonitorTemperature;
