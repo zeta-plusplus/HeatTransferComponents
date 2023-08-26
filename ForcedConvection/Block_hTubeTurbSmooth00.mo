@@ -120,9 +120,11 @@ equation
   k_b= Medium.thermalConductivity(fluid_bulkMean.state);
   mu_s= Medium.dynamicViscosity(fluid_surf.state)*fluid_surf.d;
   Re= fluid_bulkMean.d*Vel*diam/mu_b;
+  //
   Nu= 0.027*Re^(0.8)*Pr_b^(1.0/3.0)*(mu_b/mu_s)^(0.14);
+  //
   y_h= Nu*k_b/diam;
-  
+  //
 annotation(
     defaultComponentName ="calc_hConv",
     Icon(graphics = {Text(origin = {0, -56}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(fillColor = {0, 170, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 40}, {100, -40}}), Line(origin = {-0.4, 58.2}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {50.0634, 56.8623}, points = {{-11, 3}, {51, 3}}, thickness = 2), Line(origin = {29.4105, 61.6749}, points = {{-29, -21}, {11, -1}}, thickness = 2)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));

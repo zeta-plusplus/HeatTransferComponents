@@ -1,0 +1,7 @@
+within HeatTransferComponents.NaturalConvection.Examples.Test;
+
+model Block_hVerticalPlate00_test001
+  extends Modelica.Icons.Example;
+equation
+
+end Block_hVerticalPlate00_test001;
