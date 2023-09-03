@@ -1,6 +1,6 @@
 within HeatTransferComponents.ForcedConvection;
 
-model Block_hTubeTurbSmooth00
+model Block_hFlatPlateTurbSmooth00
   //----------------------------------------
   // import
   //----------------------------------------
@@ -14,7 +14,9 @@ model Block_hTubeTurbSmooth00
   //----------------------------------------
   // parameters
   //----------------------------------------
-  parameter units.Length diam=0.1;
+  parameter units.Length Len=0.2 "length of plate";
+  parameter units.Area Amech= Modelica.Constants.pi/4*0.1^2 "pseudo flow mechanical area";
+  
   //----------------------------------------
   // variables
   //----------------------------------------
@@ -25,7 +27,7 @@ model Block_hTubeTurbSmooth00
   units.MassFlowRate m_flow "" annotation(
     Dialog(tab = "Variables", group = "start attribute", enable = false, showStartAttribute = true));
   //
-  units.Area Amech;
+  
   Real Re;
   Real Pr_b;
   units.KinematicViscosity mu_b;
@@ -44,11 +46,11 @@ model Block_hTubeTurbSmooth00
   // interface
   //----------------------------------------
   Modelica.Blocks.Interfaces.RealOutput y_h(quantity= "CoefficientOfHeatTransfer", unit="W/(m2.K)", displayUnit="W/(m2.K)") annotation(
-    Placement(visible = true, transformation(origin = {110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_1(redeclare package Medium=Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
-    Placement(visible = true, transformation(origin = {0, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 79}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {0, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_2(redeclare package Medium=Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
@@ -102,20 +104,19 @@ equation
   fluidStat.h = fluid.h - 1.0 / 2.0 * (sign(Vel) * abs(Vel) ^ 2.0);
   fluid.h = Medium.isentropicEnthalpy(fluid.p, fluidStat.state);
 //
-  Amech= Modelica.Constants.pi/4*diam^2.0;
   m_flow= fluidStat.d*Vel*Amech;
 //
   Pr_b= Medium.prandtlNumber(fluid_bulkMean.state);
   mu_b= Medium.dynamicViscosity(fluid_bulkMean.state)*fluid_bulkMean.d;
   k_b= Medium.thermalConductivity(fluid_bulkMean.state);
   mu_s= Medium.dynamicViscosity(fluid_surf.state)*fluid_surf.d;
-  Re= fluid_bulkMean.d*Vel*diam/mu_b;
+  Re= fluid_bulkMean.d*Vel*Len/mu_b;
 //
-  Nu= 0.027*Re^(0.8)*Pr_b^(1.0/3.0)*(mu_b/mu_s)^(0.14);
+  Nu= 0.037*Re^(0.8)*Pr_b^(1.0/3.0);
 //
-  y_h= Nu*k_b/diam;
+  y_h= Nu*k_b/Len;
   //
 annotation(
     defaultComponentName ="calc_hConv",
-    Icon(graphics = {Text(origin = {0, -56}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(fillColor = {0, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 40}, {100, -40}}), Line(origin = {-0.4, 58.2}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {50.06, 56.86}, points = {{-11, 3}, {51, 3}}, thickness = 1.5), Line(origin = {29.41, 61.67}, points = {{-29, -21}, {11, -1}}, thickness = 1.5), Line(origin = {-91.97, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-71.97, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-51.97, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-31.97, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-11.97, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {8.03, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {28.03, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {48.03, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {68.03, 8.81}, points = {{12, 29}, {12, 9}}, color = {255, 0, 0}, thickness = 1, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
-end Block_hTubeTurbSmooth00;
+    Icon(graphics = {Text(origin = {0, 64}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(origin = {0, -36}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-100, 4}, {100, -4}}), Line(origin = {0.631866, -58.1429}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {51.55, -62.58}, points = {{-11, 3}, {51, 3}}, thickness = 1.5), Line(origin = {47.73, -35.84}, points = {{-47, -3}, {-9, -23}}, thickness = 1.5), Line(origin = {1.24796, 12.0219}, points = {{-72.9926, -8.98625}, {-52.9926, 1.01375}, {-34.9926, 7.0138}, {-12.9926, 5.01375}, {15.0074, -8.98625}, {37.0074, -8.9862}, {53.0074, -2.98625}, {73.0074, 1.01375}}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 7), Line(origin = {-80, -29}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-59.7132, -28.7709}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-40.1366, -28.2201}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-20.3339, -28.7967}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {0.242731, -28.5995}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {20.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {40.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {59.88, -28.9181}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {80.1987, -28.8513}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
+end Block_hFlatPlateTurbSmooth00;
