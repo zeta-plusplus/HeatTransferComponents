@@ -15,7 +15,6 @@ model Block_hVerticalPlate00
   //----------------------------------------
   parameter units.Length Lc = 1.0;
   parameter units.Acceleration grav=9.81;
-  
   //----------------------------------------
   // variables
   //----------------------------------------
@@ -43,6 +42,8 @@ model Block_hVerticalPlate00
     Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -1}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_T_fluid(quantity = "ThermodynamicTemperature", unit = "K", displayUnit = "degC") annotation(
+    Placement(visible = true, transformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {56, -100}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
 equation
 //
   heatPort.Q_flow = 0.0;
@@ -68,13 +69,14 @@ equation
   k_b = Medium.thermalConductivity(fluid_bulkMean.state);
   mu_s = Medium.dynamicViscosity(fluid_surf.state)*fluid_surf.d;
   beta_b= Medium.isobaricExpansionCoefficient(fluid_bulkMean.state);
-  //
+//
   GrL= (grav*beta_b*(fluid_surf.T-fluid.T)*Lc^3)/(nu_b^2);
   RaL= GrL*Pr_b;
   Nu= (0.825+(0.387*RaL^(1.0/6.0))/(1.0+(0.492/Pr_b)^(9.0/16.0))^(8.0/27.0))^(2.0);
-  //
+//
   y_h = Nu*k_b/Lc;
-  //
+  y_T_fluid= fluid.T;
+//
   annotation(
     defaultComponentName = "calc_hConv",
   Icon(graphics = {Text(origin = {90, 20}, rotation = -90, extent = {{-120, 10}, {120, -10}}, textString = "%name"), Line(origin = {-99.401, 15.5933}, points = {{44, -16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Rectangle(origin = {-49, 20}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-5, 120}, {5, -120}}), Line(origin = {-24.18, -34.18}, points = {{-11.8178, -51.8178}, {2.18219, -35.8178}, {8.18219, 2.18219}, {8.18219, 46.1822}}, arrow = {Arrow.None, Arrow.Open}), Line(origin = {27.2, -36.2}, points = {{10.7958, -47.7958}, {-1.2042, -37.7958}, {-11.2042, 2.2042}, {-11.2042, 48.2042}}, arrow = {Arrow.None, Arrow.Open}), Line(origin = {1, -37}, points = {{-1, -43}, {-1, 49}}, arrow = {Arrow.None, Arrow.Open}), Line(origin = {-138.825, 87.2327}, points = {{59, -47}, {59, 53}}, thickness = 2), Line(origin = {-90.825, 73.1586}, points = {{33, -75}, {11, -33}}, thickness = 2)}, coordinateSystem(extent = {{-100, -100}, {100, 140}})),

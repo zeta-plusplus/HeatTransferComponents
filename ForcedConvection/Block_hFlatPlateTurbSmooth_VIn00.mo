@@ -1,6 +1,6 @@
 within HeatTransferComponents.ForcedConvection;
 
-model Block_hFlatPlateTurbSmooth00
+model Block_hFlatPlateTurbSmooth_VIn00
   //----------------------------------------
   // import
   //----------------------------------------
@@ -15,7 +15,7 @@ model Block_hFlatPlateTurbSmooth00
   // parameters
   //----------------------------------------
   parameter units.Length Len=0.2 "length of plate";
-  parameter units.Area Amech= Modelica.Constants.pi/4*0.1^2 "pseudo flow mechanical area";
+  
   //----------------------------------------
   // variables
   //----------------------------------------
@@ -25,6 +25,7 @@ model Block_hFlatPlateTurbSmooth00
     Dialog(tab = "Variables", group = "start attribute", enable = false, showStartAttribute = true));
   units.MassFlowRate m_flow "" annotation(
     Dialog(tab = "Variables", group = "start attribute", enable = false, showStartAttribute = true));
+  units.Area Amech "calculated mechanical area of flow";
   //
   Real Re;
   Real Pr_b;
@@ -53,6 +54,8 @@ model Block_hFlatPlateTurbSmooth00
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput y_T_fluid(quantity = "ThermodynamicTemperature", unit = "K", displayUnit = "degC") annotation(
     Placement(visible = true, transformation(origin = {110, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -54}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Blocks.Interfaces.RealInput u_V(quantity="Velocity", unit="m/s", displayUnit="m/s") annotation(
+    Placement(visible = true, transformation(origin = {-106, 62}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-99, 60}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
 equation
 //
   heatPort.Q_flow = 0;
@@ -88,6 +91,9 @@ equation
     port_2.p= fluid.p;
     port_2.h_outflow= fluid.h;
   end if;
+  
+  Vel= u_V;
+  
 //-- mass conservation --
   port_1.m_flow + port_2.m_flow = 0;
   port_1.C_outflow = inStream(port_2.C_outflow);
@@ -119,5 +125,5 @@ equation
   //
 annotation(
     defaultComponentName ="calc_hConv",
-    Icon(graphics = {Text(origin = {0, 64}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(origin = {1, -36}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-95, 4}, {95, -4}}), Line(origin = {0.631866, -58.1429}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {71.4943, -62.8263}, points = {{-11, 3}, {-11, -17}}, thickness = 1.5), Line(origin = {47.73, -35.84}, points = {{-47, -3}, {13, -23}}, thickness = 1.5), Line(origin = {1.24796, 12.0219}, points = {{-72.9926, -8.98625}, {-52.9926, 1.01375}, {-34.9926, 7.0138}, {-12.9926, 5.01375}, {15.0074, -8.98625}, {37.0074, -8.9862}, {53.0074, -2.98625}, {73.0074, 1.01375}}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 7), Line(origin = {-80, -29}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-59.7132, -28.7709}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-40.1366, -28.2201}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-20.3339, -28.7967}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {0.242731, -28.5995}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {20.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {40.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {59.88, -28.9181}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {80.1987, -28.8513}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
-end Block_hFlatPlateTurbSmooth00;
+    Icon(graphics = {Text(origin = {0, 84}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(origin = {1, -36}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-95, 4}, {95, -4}}), Line(origin = {0.631866, -58.1429}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {71.4943, -62.8263}, points = {{-11, 3}, {-11, -17}}, thickness = 1.5), Line(origin = {47.73, -35.84}, points = {{-47, -3}, {13, -23}}, thickness = 1.5), Line(origin = {1.24796, 12.0219}, points = {{-72.9926, -8.98625}, {-52.9926, 1.01375}, {-34.9926, 7.0138}, {-12.9926, 5.01375}, {15.0074, -8.98625}, {37.0074, -8.9862}, {53.0074, -2.98625}, {73.0074, 1.01375}}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 7), Line(origin = {-80, -29}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-59.7132, -28.7709}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-40.1366, -28.2201}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-20.3339, -28.7967}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {0.242731, -28.5995}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {20.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {40.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {59.88, -28.9181}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {80.1987, -28.8513}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
+end Block_hFlatPlateTurbSmooth_VIn00;
