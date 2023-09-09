@@ -49,7 +49,7 @@ model HTflatPlateTurbSmooth_VIn00
   // interface
   //----------------------------------------
   Modelica.Blocks.Interfaces.RealOutput y_h(quantity= "CoefficientOfHeatTransfer", unit="W/(m2.K)", displayUnit="W/(m2.K)") annotation(
-    Placement(visible = true, transformation(origin = {110, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {101, -59}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {110, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {101, -70}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_1(redeclare package Medium=Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
@@ -62,6 +62,8 @@ model HTflatPlateTurbSmooth_VIn00
     Placement(visible = true, transformation(origin = {110, 56}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {93, 60}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput u_V(displayUnit = "m/s", quantity = "Velocity", unit = "m/s") annotation(
     Placement(visible = true, transformation(origin = {-106, 32}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-99, 30}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_Q_flow(displayUnit = "W", quantity = "Power", unit = "W") annotation(
+    Placement(visible = true, transformation(origin = {110, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {103, -40}, extent = {{7, -7}, {-7, 7}}, rotation = 180)));
 equation
 //
   heatPort.Q_flow = Q_flow;
@@ -139,7 +141,7 @@ equation
   Q_flow= AreaHT_par*h_HT*(heatPort.T-fluid.T);
   actualStream(port_1.h_outflow)*port_1.m_flow + Q_flow + actualStream(port_2.h_outflow)*port_2.m_flow=0.0;
 //
-  
+  y_Q_flow= Q_flow;
   y_h= h_HT;
   //
 annotation(
