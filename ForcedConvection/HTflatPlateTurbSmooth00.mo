@@ -35,6 +35,8 @@ model HTflatPlateTurbSmooth00
   units.ThermalConductivity k_b;
   units.Velocity Vel;
   units.HeatFlowRate Q_flow;
+  units.HeatFlowRate Q_flow_unheatedFluid;
+  units.HeatFlowRate Q_flow_heatedFluid;
   units.CoefficientOfHeatTransfer h_HT;
   //----------------------------------------
   // internal objects
@@ -134,13 +136,15 @@ equation
 //
   Nu= 0.037*Re^(0.8)*Pr_b^(1.0/3.0);
   h_HT= Nu*k_b/Len_par;
-  Q_flow= AreaHT_par*h_HT*(heatPort.T-fluid.T);
-  actualStream(port_1.h_outflow)*port_1.m_flow + Q_flow + actualStream(port_2.h_outflow)*port_2.m_flow=0.0;
+  Q_flow_unheatedFluid= AreaHT_par*h_HT*(heatPort.T-fluid.T);
+  Q_flow_heatedFluid= AreaHT_par*h_HT*(heatPort.T-fluidHeated.T);
+  Q_flow= Q_flow_heatedFluid;
+  fluid.h*m_flow_abs + Q_flow - fluidHeated.h*m_flow_abs=0.0;
 //
   y_Q_flow= Q_flow;
   y_h= h_HT;
   //
 annotation(
     defaultComponentName ="HTflatPlate",
-    Icon(graphics = {Text(origin = {0, 64}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(origin = {1, -36}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-95, 4}, {95, -4}}), Line(origin = {0.631866, -58.1429}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {1.24796, 12.0219}, points = {{-72.9926, -8.98625}, {-52.9926, 1.01375}, {-34.9926, 7.0138}, {-12.9926, 5.01375}, {15.0074, -8.98625}, {37.0074, -8.9862}, {53.0074, -2.98625}, {73.0074, 1.01375}}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 7), Line(origin = {-80, -29}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-59.7132, -28.7709}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-40.1366, -28.2201}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-20.3339, -28.7967}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {0.242731, -28.5995}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {20.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {40.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {59.88, -28.9181}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {80.1987, -28.8513}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
+    Icon(graphics = {Text(origin = {0, 64}, extent = {{-100, 10}, {100, -10}}, textString = "%name"), Rectangle(origin = {1, -40}, fillColor = {0, 0, 127}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-95, 6}, {95, -6}}), Line(origin = {0.631866, -58.1429}, points = {{0, 16}, {0, -16}}, color = {255, 0, 0}, thickness = 4), Line(origin = {1.24796, 12.0219}, points = {{-72.9926, -8.98625}, {-52.9926, 1.01375}, {-34.9926, 7.0138}, {-12.9926, 5.01375}, {15.0074, -8.98625}, {37.0074, -8.9862}, {53.0074, -2.98625}, {73.0074, 1.01375}}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 7), Line(origin = {-80, -29}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-59.7132, -28.7709}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-40.1366, -28.2201}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {-20.3339, -28.7967}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {0.242731, -28.5995}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {20.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {40.3034, -29.0486}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {59.88, -28.9181}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5), Line(origin = {80.1987, -28.8513}, points = {{0, -9}, {0, 21}}, color = {255, 0, 0}, arrow = {Arrow.None, Arrow.Open}, arrowSize = 5)}, coordinateSystem(extent = {{-100, -80}, {100, 80}})));
 end HTflatPlateTurbSmooth00;
