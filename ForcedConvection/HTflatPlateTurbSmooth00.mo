@@ -29,6 +29,7 @@ model HTflatPlateTurbSmooth00
   //
   Real Re;
   Real Pr_b;
+  units.Temperature T_bulkMean;
   units.KinematicViscosity mu_b;
   units.KinematicViscosity mu_s;
   Real Nu;
@@ -44,8 +45,6 @@ model HTflatPlateTurbSmooth00
   Medium.BaseProperties fluid(p(min = 0.0 + 1.0e-10), T(min = 0.0 + 1.0e-10), h(min = 0.0 + 1.0e-10)) "";
   Medium.BaseProperties fluidHeated(p(min = 0.0 + 1.0e-10), T(min = 0.0 + 1.0e-10), h(min = 0.0 + 1.0e-10)) "";
   Medium.BaseProperties fluidStat(p(min = 0.0 + 1.0e-10), T(min = 0.0 + 1.0e-10), h(min = 0.0 + 1.0e-10)) "";
-  Medium.BaseProperties fluid_surf(p(min = 0.0 + 1.0e-10), T(min = 0.0 + 1.0e-10), h(min = 0.0 + 1.0e-10)) "";
-  Medium.BaseProperties fluid_bulkMean(p(min = 0.0 + 1.0e-10), T(min = 0.0 + 1.0e-10), h(min = 0.0 + 1.0e-10)) "";
   //----------------------------------------
   // interface
   //----------------------------------------
@@ -114,25 +113,19 @@ equation
 //
   fluidHeated.p= fluid.p;
   fluidHeated.Xi= fluid.Xi;
-  //
-  fluid_surf.p= fluid.p;
-  fluid_surf.T= heatPort.T;
-  fluid_surf.Xi= fluid.Xi;
 //
-  fluid_bulkMean.p= fluid.p;
-  fluid_bulkMean.T= (fluid.T+fluid_surf.T)/2.0;
-  fluid_bulkMean.Xi= fluid.Xi;
+  T_bulkMean= (fluid.T+heatPort.T)/2.0;
 // -- total <-> static --
   fluidStat.h = fluid.h - 1.0 / 2.0 * (sign(Vel) * abs(Vel) ^ 2.0);
   fluid.h = Medium.isentropicEnthalpy(fluid.p, fluidStat.state);
 //
   m_flow_abs= fluidStat.d*Vel*Amech_par;
 //
-  Pr_b= Medium.prandtlNumber(fluid_bulkMean.state);
-  mu_b= Medium.dynamicViscosity(fluid_bulkMean.state)*fluid_bulkMean.d;
-  k_b= Medium.thermalConductivity(fluid_bulkMean.state);
-  mu_s= Medium.dynamicViscosity(fluid_surf.state)*fluid_surf.d;
-  Re= fluid_bulkMean.d*Vel*Len_par/mu_b;
+  Pr_b= Medium.prandtlNumber(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X));
+  mu_b= Medium.dynamicViscosity(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X))*Medium.density(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X));
+  k_b= Medium.thermalConductivity(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X));
+  mu_s= Medium.dynamicViscosity(Medium.setState_pTX(fluid.p, heatPort.T, fluid.X))*Medium.density(Medium.setState_pTX(fluid.p, heatPort.T, fluid.X));
+  Re= Medium.density(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X))*Vel*Len_par/mu_b;
 //
   Nu= 0.037*Re^(0.8)*Pr_b^(1.0/3.0);
   h_HT= Nu*k_b/Len_par;
