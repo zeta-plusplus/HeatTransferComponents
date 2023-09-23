@@ -17,6 +17,7 @@ model HTflatPlateTurbSmooth00
   parameter units.Length Len_par=0.2 "length of plate";
   parameter units.Area Amech_par= Modelica.Constants.pi/4*0.1^2 "pseudo flow mechanical area";
   parameter units.Area AreaHT_par= 0.2*1 "area of heat transfer";
+  parameter Real khconv=1.0 "factor on heat convection coefficient, for correlation study, parmeter study";
   //----------------------------------------
   // variables
   //----------------------------------------
@@ -128,7 +129,7 @@ equation
   Re= Medium.density(Medium.setState_pTX(fluid.p, T_bulkMean, fluid.X))*Vel*Len_par/mu_b;
 //
   Nu= 0.037*Re^(0.8)*Pr_b^(1.0/3.0);
-  h_HT= Nu*k_b/Len_par;
+  h_HT= khconv*Nu*k_b/Len_par;
   Q_flow_unheatedFluid= AreaHT_par*h_HT*(heatPort.T-fluid.T);
   Q_flow_heatedFluid= AreaHT_par*h_HT*(heatPort.T-fluidHeated.T);
   Q_flow= Q_flow_heatedFluid;

@@ -16,6 +16,8 @@ model HTverticalPlate00
   parameter units.Length Lc = 1.0;
   parameter units.Area AreaHT_par= 0.2*1 "area of heat transfer";
   parameter units.Acceleration grav=9.81;
+  parameter Real khconv=1.0 "factor on heat convection coefficient, for correlation study, parmeter study";
+  
   
   //----------------------------------------
   // variables
@@ -82,7 +84,7 @@ equation
   RaL= GrL*Pr_b;
   Nu= (0.825+(0.387*RaL^(1.0/6.0))/(1.0+(0.492/Pr_b)^(9.0/16.0))^(8.0/27.0))^(2.0);
 //
-  h_HT = Nu*k_b/Lc;
+  h_HT = khconv*Nu*k_b/Lc;
   Q_flow= h_HT*AreaHT_par*(heatPort.T-fluid.T);
   //
   y_Q_flow=Q_flow;
