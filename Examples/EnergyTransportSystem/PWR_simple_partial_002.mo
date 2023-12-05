@@ -5,7 +5,7 @@ model PWR_simple_partial_002
   //-----
   import units = Modelica.Units.SI;
   //-----
-  parameter units.Area AreaHT = 295 "";
+  parameter units.Area AreaHT = 265 "";
   parameter Real valMinTContour = 0;
   parameter Real valMaxTContour = 2500;
   //-----
@@ -13,7 +13,7 @@ model PWR_simple_partial_002
     Placement(visible = true, transformation(origin = {-162, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.Boundary_pT pump_outlet(redeclare package Medium = Modelica.Media.Water.StandardWater, T = 275 + 273.15, nPorts = 1, p = 150*100*1000) annotation(
     Placement(visible = true, transformation(origin = {186, -80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sources.MassFlowSource_T steam_generator_inlet(redeclare package Medium = Modelica.Media.Water.StandardWater, m_flow = -850, nPorts = 1) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T steam_generator_inlet(redeclare package Medium = Modelica.Media.Water.StandardWater, m_flow = -980, nPorts = 1) annotation(
     Placement(visible = true, transformation(origin = {160, 99}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow reactor annotation(
     Placement(visible = true, transformation(origin = {-32, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -61,7 +61,7 @@ model PWR_simple_partial_002
     Placement(visible = true, transformation(origin = {-131, -95}, extent = {{-11, -5}, {11, 5}}, rotation = 0)));
   HeatTransferComponents.ForcedConvection.HTflatPlateTurbSmooth01 hTflatPlate(Amech_par = 0.02, AreaHT_par = AreaHT, Len_par = 5, redeclare package Medium = Modelica.Media.Water.StandardWater) annotation(
     Placement(visible = true, transformation(origin = {107.8, -8.5}, extent = {{-21.5, 17.2}, {21.5, -17.2}}, rotation = 90)));
-  Modelica.Blocks.Sources.Ramp ramp_khconv_reactorWall(duration = 1, height = 0, offset = 14, startTime = 2) annotation(
+  Modelica.Blocks.Sources.Ramp ramp_khconv_reactorWall(duration = 1, height = 0, offset = 13, startTime = 2) annotation(
     Placement(visible = true, transformation(origin = {62, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   HeatTransferComponents.NaturalConvection.HTverticalPlate01 reactor_LostCoolant(AreaHT_par = AreaHT, Lc = hTflatPlate.Len_par, redeclare package Medium = Modelica.Media.Air.DryAirNasa) annotation(
     Placement(visible = true, transformation(origin = {-189, -29.4}, extent = {{21, -21}, {-21, 29.4}}, rotation = 0)));
