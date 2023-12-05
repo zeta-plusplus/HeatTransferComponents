@@ -16,6 +16,8 @@ model Block_hFlatPlateTurbSmooth00
   //----------------------------------------
   parameter units.Length Len=0.2 "length of plate";
   parameter units.Area Amech= Modelica.Constants.pi/4*0.1^2 "pseudo flow mechanical area";
+  parameter Real khconv=1.0 "factor on heat convection coefficient, for correlation study, parmeter study";
+  
   //----------------------------------------
   // variables
   //----------------------------------------
@@ -107,7 +109,7 @@ equation
 //
   Nu= 0.037*Re^(0.8)*Pr_b^(1.0/3.0);
 //
-  y_h= Nu*k_b/Len;
+  y_h= khconv*Nu*k_b/Len;
   y_T_fluid=fluid.T;
   //
 annotation(

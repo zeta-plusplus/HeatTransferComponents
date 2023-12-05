@@ -5,10 +5,10 @@ model PWR_simple_partial_001
   //-----
   import units = Modelica.Units.SI;
   //-----
-  parameter units.Area AreaHT = 80 "";
-  parameter Real khconv = 26 "";
+  parameter units.Area AreaHT = 100 "";
+  parameter Real khconv = 20.0 "";
   parameter Real valMinTContour = 0;
-  parameter Real valMaxTContour = 1200;
+  parameter Real valMaxTContour = 2500;
   //-----
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-162, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -38,7 +38,7 @@ model PWR_simple_partial_001
     Placement(visible = true, transformation(origin = {54, -48}, extent = {{-13, -8}, {13, 8}}, rotation = 0)));
   Modelica.Blocks.Interaction.Show.RealValue real_p_reactor_out(significantDigits = 6, use_numberPort = true) annotation(
     Placement(visible = true, transformation(origin = {54, 46}, extent = {{-13, -8}, {13, 8}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp ramp_heat_reactor(duration = 1, height = 1e6, offset = 165*1e6, startTime = 20) annotation(
+  Modelica.Blocks.Sources.Ramp ramp_heat_reactor(duration = 1, height = 0*1e6, offset = 165*1e6, startTime = 20) annotation(
     Placement(visible = true, transformation(origin = {-50, 132}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Interaction.Show.RealValue real_p_reactor_out1(significantDigits = 6, use_numberPort = true) annotation(
     Placement(visible = true, transformation(origin = {25, 16}, extent = {{18, -8}, {-18, 8}}, rotation = 0)));
