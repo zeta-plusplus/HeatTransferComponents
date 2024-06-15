@@ -24,7 +24,7 @@ model ThermalValve_ex01
     Placement(transformation(origin = {64, 10}, extent = {{-6, -6}, {6, 6}})));
   Modelica.Blocks.Interaction.Show.RealValue realValue1(significantDigits = 4) annotation(
     Placement(transformation(origin = {87, -20}, extent = {{-13, -8}, {13, 8}})));
-  Utilities.ThermalValve thermalValve annotation(
+  Utilities.ThermalValve thermalValve(dT_fullOpen_par(displayUnit = "K"))  annotation(
     Placement(transformation(origin = {-14, 10}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Ramp ramp(height = 1, duration = 10, offset = 0, startTime = 50) annotation(
     Placement(transformation(origin = {-44, 66}, extent = {{-10, -10}, {10, 10}})));

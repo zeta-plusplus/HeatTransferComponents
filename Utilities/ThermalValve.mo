@@ -15,8 +15,8 @@ model ThermalValve
             Declaration
   ********************************************************/
   //********** Parameters **********
-  units.Temperature dT_fullOpen_par=0.001 "";
-  Modelica.Units.SI.HeatFlowRate Q_flow_fullOpen_par= 10.0 "";
+  parameter units.Temperature dT_fullOpen_par=0.001 "";
+  parameter Modelica.Units.SI.HeatFlowRate Q_flow_fullOpen_par= 10.0 "";
   
   //********** Internal variables **********
   units.ThermalConductance G_fullOpen "";
