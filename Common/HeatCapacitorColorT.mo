@@ -38,5 +38,5 @@ equation
 //*****************************************************************
   annotation(
     defaultComponentName = "HeatCapacitor",
-    Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Text(origin = {0, -130}, extent = {{-100, 10}, {100, -10}}, textString = DynamicSelect("0.0", String(Tvis, sigDigits, 0, true))), Rectangle(origin = {0, -11}, fillColor = DynamicSelect({192, 192, 192}, {vecRGB[1], vecRGB[2], vecRGB[3]}), pattern = LinePattern.None, fillPattern = FillPattern.Backward, extent = {{-80, 79}, {80, -79}}), Text(extent = {{-69, 7}, {71, -24}}, textString = "%C")}));
+    Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Text(origin = {0, -130}, extent = {{-100, 10}, {100, -10}}, textString = DynamicSelect("0.0", String(Tvis, sigDigits, 0, true))), Rectangle(origin = {0, -10}, fillColor = DynamicSelect({192, 192, 192}, {vecRGB[1], vecRGB[2], vecRGB[3]}), pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-80, 80}, {80, -80}}), Text(extent = {{-69, 7}, {71, -24}}, textString = "%C")}));
 end HeatCapacitorColorT;
